@@ -20,13 +20,13 @@ This function serves two purposes from a fitted "owl" object. It can recommend t
 
   \item{RR}{observed outcomes at the \code{K} stages for all subjects in the new sample. It is a vector if \code{K=1}, or a list of \code{K} vectors corresponding to the \code{K} stages. If not specified, treatments will be recommended for the new sample instead of DTR evaluation. The default is \code{RR=NULL}. }
 
-  \item{K}{number of stages of \code{H} observed in the new sample.}
+  \item{K}{number of stages of \code{H} observed in the new sample}
 
   \item{pi}{treatment assignment probabilities of the observed treatments at the K stages for all subjects in the new sample. It is a vector if \code{K=1}, or a list of \code{K} vectors corresponding to the \code{K} stages. It can be unspecified if one is only interested in treatment recommendations for the new sample. If both \code{AA} and \code{RR} are specified while \code{pi} is not specified, we will estimate the treatment assignment probabilities based on lasso-penalized logistic regressions with predictors being \eqn{H_k} at each stage k. The default is \code{pi=NULL}.}
   
   \item{...}{further arguments passed to or from other methods.}
 }
- 
+
 
 \value{
   \item{fit}{fitted decision functions at the K stages for each subject in the new sample. It is a list of K vectors.}
@@ -40,16 +40,13 @@ This function serves two purposes from a fitted "owl" object. It can recommend t
   \item{benefit }{overall empirical benefit function under the estimated DTR evaluated on the new sample. It is returned only when \code{AA} and \code{RR} are fully specified for the K stages.}
 
   \item{pi}{treatment assignment probabilities of the assigned treatments at the K stages for each subject in the new sample. If \code{pi} is not specified but \code{H} and \code{AA} are specified for the K stages, the estimated treatment assignment probabilities from lasso-penalized logistic regressions with \eqn{H_k} being the predictors at each stage k will be returned.}
-  
-  \item{...}{further arguments passed to or from other methods.}
 }
  
 \author{
 Yuan Chen, Ying Liu, Donglin Zeng, Yuanjia Wang
 
-Maintainer: Yuan Chen <yc3281@columbia.edu>
+Maintainer: Yuan Chen <yc3281@columbia.edu><irene.yuan.chen@gmail.com>
 }
- 
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -91,7 +88,8 @@ owl_test$treatment
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-
+\keyword{Outcome-weighted learning}% use one of  RShowDoc("KEYWORDS")
+\keyword{Dynamic treatment regime (DTR)}% __ONLY ONE__ keyword per line
 
 
 

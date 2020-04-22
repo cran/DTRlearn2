@@ -25,28 +25,27 @@ We provide a two-stage sequential multiple assignment randomized trial (SMART) d
   }
 }
 
- 
+
 \references{
 Pelham Jr, W. E., & Fabiano, G. A. (2008). Evidence-based psychosocial treatments for attention-deficit/hyperactivity disorder. Journal of Clinical Child & Adolescent Psychology, 37(1), 184-214.
 }
 \examples{
-library(DTRlearn2)
 data(adhd)
 attach(adhd)
-
 n = length(a1)
 H1 = scale(cbind(o11, o12, o13, o14))
 H2 = scale(cbind(H1, a1, H1*a1, r, o22, r*a1, o22*a1))
 colnames(H2)[12] = "r*a1"
 colnames(H2)[13] = "o22*a1"
 
-fit_ql = ql(H=list(H1, H2), AA=list(a1,a2), RR=list(rep(0, n), y),K=2,
-            pi=list(rep(0.5, n), rep(0.5,n)), lasso=TRUE, m=3)
+fit_ql = ql(H=list(H1, H2), AA=list(a1,a2), RR=list(rep(0, n), y),
+            pi=list(rep(0.5, n), rep(0.5,n)), K=2, m=3, lasso=TRUE)
 
-c = 2^c(-5:5)
+c = 2^c(-3:3)
 fit_owl = owl(H=list(H1, H2), AA=list(a1,a2), RR=list(rep(0, n), y),
               n=n, K=2, pi=list(rep(0.5, n), rep(0.5,n)), res.lasso = TRUE,
               loss="hinge", kernel="linear", augment=TRUE, c=c, m=3)
-}
 
+
+}
 \keyword{datasets}

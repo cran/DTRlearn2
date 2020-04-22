@@ -2,7 +2,7 @@
 \alias{sim_Kstage}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Simulate a K-stage SMART data
+Simulate a K-stage Sequential Multiple Assignment Randomized Trial (SMART) data
 }
 \description{
 This function simulates a K-stage SMART data with \code{(pinfo + pnoise)} baseline variables from a multivariate Gaussian distribution. The \code{pinfo} variables have variance 1 and pairwise correlation 0.2; the \code{pnoise} variables have mean 0 and are uncorrelated with each other and with the \code{pinfo} variables.
@@ -12,7 +12,7 @@ Subjects are from \code{n_cluster} latent groups with equal sizes, and these \co
 }
 
 \usage{
-sim_Kstage(n, n_cluster, pinfo, pnoise, centroids=NULL, K)
+sim_Kstage (n, n_cluster, pinfo, pnoise, centroids=NULL, K)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,25 +20,25 @@ sim_Kstage(n, n_cluster, pinfo, pnoise, centroids=NULL, K)
   \item{n_cluster}{number of latent groups}
   \item{pinfo}{number of informative baseline variables}
   \item{pnoise}{number of non-informative baseline variables}
-  \item{centroids}{centroids of the \code{pinfo} variables for the \code{n_cluster}
-  groups. It is a matrix of dimension \code{n_cluster} by \code{pinfo}. It's used as the means of the multivariate Gaussians to generate the \code{pinfo} variables for the \code{n_cluster} groups. For a training set, do not assign centroids, the centroids are generated randomly from N(0,5) by the function. For a test set, one should assign the same set of centroids as the training set.}
+  \item{centroids}{centroids of the \code{pinfo} variables for the \code{n_cluster} groups. It is a matrix of dimension \code{n_cluster} by \code{pinfo}. It's used as the means of the multivariate Gaussians to generate the \code{pinfo} variables for the \code{n_cluster} groups. For a training set, do not assign centroids, the centroids are generated randomly from N(0,5) by the function. For a test set, one should assign the same set of centroids as the training set.}
   \item{K}{number of stages.}
 }
- 
+
 \value{
   \item{X }{baseline variables. It is a matrix of dimension \code{n} by \code{(pinfo + pnoise)}.}
   \item{A }{treatment assigments for the K-stages. It is a list of K vectors.}
   \item{R }{outcomes of the K-stages. It is a list of K vectors. In this simulation setting, no intermediate outcomes are observed, so the first K-1 vectors are vectors of 0.}
   \item{optA }{optimal treatments for the K-stages. It is a list of K vectors.}
   \item{centroids }{centroids of the \code{pinfo} variables for the \code{n_cluster} groups. It is a matrix of dimension \code{n_cluster} by \code{pinfo}. }
+
 }
- 
+
 \author{
 Yuan Chen, Ying Liu, Donglin Zeng, Yuanjia Wang
 
-Maintainer: Yuan Chen <yc3281@columbia.edu>
+Maintainer: Yuan Chen <yc3281@columbia.edu><irene.yuan.chen@gmail.com>
 }
- 
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -62,8 +62,8 @@ test = sim_Kstage(n_test, n_cluster, pinfo, pnoise, train$centroids, K=2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
- 
-
+\keyword{Simulation function}
+\keyword{SMART}
 
 
 

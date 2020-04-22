@@ -2,14 +2,14 @@
 \alias{owl}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Integrated Outcome-weighted Learning for Estimating DTRs
+Integrated Outcome-weighted Learning for Estimating Optimal DTRs
 }
 \description{
 This function implements a variety of outcome-weighted learning methods for estimating general K-stage DTRs. Different loss functions - SVM hinge loss, SVM ramp loss, binomial deviance loss, and L2 loss - can be adopted to solve the weighted classification problem at each stage. Augmentation in the outcomes is allowed to improve efficiency especially when there are multiple stages with a small sample size. Cross validation is conducted to choose the best tuning parameters if any.
 }
 \usage{
-owl(H, AA, RR, n, K, pi='estimated', res.lasso=T, loss='hinge', kernel='linear',
-augment=T, c=2^(-2:2), sigma=c(0.03,0.05,0.07), s=2.^(-2:2), m=4)
+owl(H, AA, RR, n, K, pi='estimated', res.lasso=TRUE, loss='hinge', kernel='linear',
+augment=FALSE, c=2^(-2:2), sigma=c(0.03,0.05,0.07), s=2.^(-2:2), m=4)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,7 +31,7 @@ augment=T, c=2^(-2:2), sigma=c(0.03,0.05,0.07), s=2.^(-2:2), m=4)
 
   \item{kernel}{kernel function to use under SVM hinge loss or SVM ramp loss. \code{"linear"} and \code{"rbf"} kernel are implemented under SVM hinge loss; \code{"linear"} kernel is implemented under SVM ramp loss. The default is \code{kernel="linear"}.}
 
-  \item{augment}{whether or not to use augmented outcomes at each stage. Augmentation is recommended when there are multiple stages and the sample size is small. The default is \code{augment=TRUE}.}
+  \item{augment}{whether or not to use augmented outcomes at each stage. Augmentation is recommended when there are multiple stages and the sample size is small. The default is \code{augment=FALSE}.}
 
   \item{c}{a vector specifies the values of the regularization parameter C for tuning under SVM hinge loss or SVM ramp loss. The default is \code{c=2^(-2:2)}. In practice, a wider range of \code{c} can be specified based on the data. }
 
@@ -95,9 +95,10 @@ Zhao, Y. Q., Zeng, D., Laber, E. B., & Kosorok, M. R. (2015). New statistical le
 \author{
 Yuan Chen, Ying Liu, Donglin Zeng, Yuanjia Wang
 
-Maintainer: Yuan Chen <yc3281@columbia.edu>
+Maintainer: Yuan Chen <yc3281@columbia.edu><irene.yuan.chen@gmail.com>
 }
- 
+
+
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
@@ -136,6 +137,6 @@ owl_test$valuefun
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-%\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{Outcome-weighted learning}% use one of  RShowDoc("KEYWORDS")
+\keyword{Dynamic treatment regime (DTR)}% __ONLY ONE__ keyword per line
 

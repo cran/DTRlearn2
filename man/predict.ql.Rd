@@ -8,7 +8,7 @@ Predict from a Fitted "ql" Object
 This function serves two purposes from a fitted "ql" object. It can recommend treatments for a new independent sample with partial or full subject features observed up to a certain stage. If subject features, treatment assignments and outcomes are fully observed in the new sample, this function can also evaluate the fitted DTR on this new sample, returning the empirical value function and benefit function.
 }
 \usage{
-\method{predict}{ql}(object, H, AA=NULL, RR=NULL, K, pi=NULL, Qfun=F,...)
+\method{predict}{ql}(object, H, AA=NULL, RR=NULL, K, pi=NULL, Qopt=FALSE, Qfit=FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,13 +23,14 @@ This function serves two purposes from a fitted "ql" object. It can recommend tr
   \item{K}{number of stages of \code{H} observed in the new sample}
 
   \item{pi}{treatment assignment probabilities of the observed treatments at the K stages for all subjects in the new sample. It is a vector if \code{K=1}, or a list of \code{K} vectors corresponding to the \code{K} stages. It can be unspecified if one is only interested in treatment recommendations for the new sample. If both \code{AA} and \code{RR} are specified while \code{pi} is not specified, we will estimate the treatment assignment probabilities based on lasso-penalized logistic regressions with predictors being \eqn{H_k} at each stage k. The default is \code{pi=NULL}.}
-
-  \item{Qfun}{whether or not to return the optimal Q-function. }
+  
+  \item{Qopt}{whether to output the predicted optimal Q-function. The default is \code{Qfun=FALSE}. }
+  
+  \item{Qfit}{whether to output the estimated Q-function under the observed treatments. The default is \code{fitted=FALSE}. }
   
   \item{...}{further arguments passed to or from other methods.}
 }
 
- 
 
 \value{
   \item{treatment}{recommennded optimal treatments at the K stages for each subject in the new sample. It is a list of K vectors. If no tailoring variables are learned in the "ql" object, treatments will be assigned randomly with equal probability.}
@@ -39,14 +40,16 @@ This function serves two purposes from a fitted "ql" object. It can recommend tr
   \item{benefit }{overall empirical benefit function under the estimated DTR evaluated on the new sample. It is returned only when \code{AA} and \code{RR} are fully specified for the K stages.}
 
   \item{pi}{treatment assignment probabilities of the assigned treatments at the K stages for each subject in the new sample. If \code{pi} is not specified but \code{H} and \code{AA} are specified for the K stages, the estimated treatment assignment probabilities from lasso-penalized logistic regressions with \eqn{H_k} being the predictors at each stage k will be returned.}
-    
-    \item{Qfun}{the optimal reward outcome increment (Q-function) if \code{Qfun = T} is specified. }
+  
+  \item{Q}{the predicted optimal Q-function if \code{Qfun=TRUE}.}
+  
+  \item{fitted}{the estimated Q-function under the observed treatment if \code{fitted=TRUE}.}
 }
- 
+
 \author{
 Yuan Chen, Ying Liu, Donglin Zeng, Yuanjia Wang
 
-Maintainer: Yuan Chen <yc3281@columbia.edu>
+Maintainer: Yuan Chen <yc3281@columbia.edu><irene.yuan.chen@gmail.com>
 }
 
 
@@ -89,6 +92,7 @@ ql_test2$treatment
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
- 
+\keyword{Q-learning}% use one of  RShowDoc("KEYWORDS")
+\keyword{Dynamic treatment regime (DTR)}% __ONLY ONE__ keyword per line
 
 
