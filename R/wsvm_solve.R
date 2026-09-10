@@ -1,13 +1,16 @@
 #-----------------------------------------------------------------------------------#
 # private function for solving the weighted svm with quadratic programming
 # Yuan Chen, April 2020
+# Tianchen, July 2022 modified
+# Tianchen and Yuan, Aug 2026 modified
 #-----------------------------------------------------------------------------------#
 
-wsvm_solve <-function(X, A, wR, kernel='linear', sigma=0.05, C=1, e=1e-7) {
+wsvm_solve <-function(X, A, wR, kernel='linear', sigma=0.05, C=1, e=1e-7, solver=NULL) {
   
   if (kernel=='linear') {
-    K = X %*% t(X)
-    if (is.vector(X)) K = t(X) %*% X
+    # K = X %*% t(X)
+    # if (is.vector(X)) K = t(X) %*% X
+    K = tcrossprod(X)
   }
   else if (kernel=='rbf'){
     rbf = rbfdot(sigma = sigma)
@@ -16,16 +19,33 @@ wsvm_solve <-function(X, A, wR, kernel='linear', sigma=0.05, C=1, e=1e-7) {
   
   y = A * sign(wR)
   H = y %*% t(y) * K
-  H = H + 1e-8 * diag(NCOL(K)) %*% (tcrossprod(wR))
+  H = H + 1e-8 * diag(NCOL(K))
   
   
   n = length(A)
-  solution <- tryCatch(ipop(c = rep(-1, n), H = H, A = t(y), b = 0, l = numeric(n), u = C*abs(wR), r = 0), error=function(er) er)
+  if (solver=='svm'){
+    solution <- wsvm(K, A * sign(wR), weight = abs(wR), cost=C, kernel = 'precomputed',
+                     type='C-classification', scale = FALSE, shrinking = FALSE, fitted = FALSE)
+    # if error from wsvm, run ipop method, please change solve manually
+  }else{
+    solution <- tryCatch(ipop(c = rep(-1, n), H = H, A = t(y), b = 0, l = numeric(n), u = C*abs(wR), r = 0), error=function(er) er)
+  }
+  
+  
   if ("error" %in% class(solution)) {
     return(list(beta0=NA, beta=NA, fit=NA, probability=NA, treatment=NA, sigma=NA, H=NA, alpha1=NA))
+    warnings('There is an error in soloving weighted SVM.')
   }
-  alpha = primal(solution)
-  alpha1 = alpha * y 
+  
+  if (inherits(solution, 'wsvm')){
+    alpha1 <- numeric(n)
+    alpha1[solution$index] <- as.numeric(solution$coefs)
+    alpha = alpha1 / y 
+  }else{
+    alpha = primal(solution)
+    alpha1 = alpha * y 
+  }
+  
   
   if (kernel=='linear'){
     w = t(X) %*% alpha1
@@ -34,13 +54,14 @@ wsvm_solve <-function(X, A, wR, kernel='linear', sigma=0.05, C=1, e=1e-7) {
     fitted = K %*% alpha1
   }
   rm = y - fitted
-  Imid = (alpha < C-e) & (alpha > e)
+  upper <- C * abs(wR)
+  Imid <- (alpha < upper - e) & (alpha > e)
   rmid = rm[Imid==1]
   if (sum(Imid)>0){
     bias = mean(rmid)
   } else {
-    Iup = ((alpha<e)&(A==-sign(wR)))|((alpha>C-e)&(A==sign(wR)))
-    Ilow = ((alpha<e)&(A==sign(wR)))|((alpha>C-e)&(A==-sign(wR)))
+    Iup = ((alpha<e)&(A==-sign(wR)))|((alpha>upper-e)&(A==sign(wR)))
+    Ilow = ((alpha<e)&(A==sign(wR)))|((alpha>upper-e)&(A==-sign(wR)))
     rup = rm[Iup]
     rlow = rm[Ilow]
     bias = (min(rup)+max(rlow))/2
